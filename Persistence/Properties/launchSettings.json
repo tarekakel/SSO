@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Persistence": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
