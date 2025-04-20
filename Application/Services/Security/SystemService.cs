@@ -1,6 +1,7 @@
 ﻿using Domain.Interfaces.Repositories.Security;
 using Domain.Interfaces.Services.Security;
 using Domain.Security;
+using Shared.General.Dtos;
 using Shared.Security.Dtos;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,38 @@ namespace Application.Services.Security
         public async Task DeleteAsync(Guid id)
         {
             await _repo.DeleteAsync(id);
+        }
+
+        public async Task<GeneralResponse<PagedResult<SystemDto>>> Search(PagedRequest<SystemDto> pagedRequest)
+        {
+            PagedRequest<SystemEntity> pagedEntity = new PagedRequest<SystemEntity>()
+            {
+
+                PageSize = pagedRequest.PageSize,
+                PageIndex = pagedRequest.PageIndex,
+            };
+            if (pagedRequest.Filter is not null)
+            {
+                pagedEntity.Filter = new SystemEntity()
+                {
+                    Name = pagedRequest.Filter.Name,
+                    //    Id = pagedRequest.Filter.Id.Value,
+                    Description = pagedRequest.Filter.Description
+                };
+            }
+
+
+            var res = await _repo.Search(pagedEntity);
+            PagedResult<SystemDto> result = new PagedResult<SystemDto>()
+            {
+                Data = res.Data.Select(w => new SystemDto(w.Id, w.Name, w.Description)).ToList(),
+                PageIndex = res.PageIndex,
+                PageSize = res.PageSize,
+                TotalCount = res.TotalCount
+            };
+
+            return GeneralResponse<PagedResult<SystemDto>>.SuccessResponse(result);
+
         }
     }
 

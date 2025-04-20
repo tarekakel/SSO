@@ -10,12 +10,14 @@ export const routes: Routes = [
     {
         path: 'main',
         component: MainLayoutComponent,
-        //  canActivate: [AuthGuard], // optional guard
         children: [
-            //   { path: 'dashboard', component: DashboardComponent },
-            //      { path: 'profile', component: ProfileCo mponent },
-            //   // add more pages here
+            {
+                path: 'system',
+                loadChildren: () =>
+                    import('./features/system/system.module').then((m) => m.SystemModule),
+            },
         ]
+
     },
 
 ];

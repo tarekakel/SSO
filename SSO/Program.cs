@@ -35,6 +35,20 @@ builder.Services.AddApiVersioning(options =>
 
 // Add services to the container.
 
+
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDevClient", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // <-- your Angular app's URL
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // optional
+    });
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -99,6 +113,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseCors("AllowAngularDevClient");
 
 app.UseHttpsRedirection();
 

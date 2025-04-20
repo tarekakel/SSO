@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Shared.Security.Dtos
 {
 
-    public record SystemDto(Guid Id, string Name, string? Description);
+    public record SystemDto(Guid? Id, string? Name, string? Description);
 
     public record CreateSystemDto(string Name, string? Description);
 

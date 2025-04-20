@@ -2,6 +2,7 @@
 using Domain.Interfaces.Services.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.General.Dtos;
 using Shared.Security.Dtos;
 using SSO.Filters.Auth;
 
@@ -30,6 +31,12 @@ namespace SSO.Controllers
             return system == null ? NotFound() : Ok(system);
         }
 
+
+        [HttpPost("Search")]
+        public async Task<IActionResult> Search([FromBody] PagedRequest<SystemDto> request)
+        {
+            return Ok(await _systemService.Search(request));
+        }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateSystemDto dto)
         {

@@ -29,12 +29,7 @@ export class ApiService {
   }
 
   search<T>(path: string, searchParams: any): Observable<T> {
-    let params = new HttpParams();
-    for (let key in searchParams) {
-      if (searchParams[key]) {
-        params = params.set(key, searchParams[key]);
-      }
-    }
-    return this.http.get<T>(`${this.baseUrl}/${path}`, { params });
+
+    return this.http.post<T>(`${this.baseUrl}/${path}`, searchParams);
   }
 }

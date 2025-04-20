@@ -1,5 +1,5 @@
 ﻿using Domain.Security;
-using Domain.Security.Enums;
+using Shared.General.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +15,7 @@ namespace Domain.Interfaces.Repositories.Security
         Task AddAsync(SystemEntity entity);
         Task UpdateAsync(SystemEntity entity);
         Task DeleteAsync(Guid id);
+        Task<PagedResult<SystemEntity>> Search(PagedRequest<SystemEntity> pagedRequest);
     }
 
 

@@ -15,8 +15,7 @@ import { RouterModule } from '@angular/router';
     NzIconModule,
     CoreModule,
     AuthModule,
-    RouterModule
-
+    RouterModule,
   ],
 
 })

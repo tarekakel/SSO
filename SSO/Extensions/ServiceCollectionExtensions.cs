@@ -34,6 +34,7 @@ namespace SSO.Extensions
             services.AddScoped<IModuleService, ModuleService>();
             services.AddScoped<IPageService, PageService>();
             services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }
