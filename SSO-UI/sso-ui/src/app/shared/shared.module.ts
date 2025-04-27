@@ -9,15 +9,13 @@ import { NzInputModule } from "ng-zorro-antd/input";
 import { NzMessageModule } from "ng-zorro-antd/message";
 import { DataTableComponent } from "./components/data-table/data-table.component";
 
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import {
-
-    NzTableModule,
-
-} from 'ng-zorro-antd/table';
+import { NzTableModule, } from 'ng-zorro-antd/table';
+import { NzIconModule } from "ng-zorro-antd/icon";
 @NgModule({
     declarations: [DataTableComponent],
 
@@ -35,6 +33,8 @@ import {
         NzRadioModule,
         NzSwitchModule,
         NzTableModule,
+        NzIconModule,
+        NzModalModule
     ],
     exports: [CommonModule,
         FormsModule,
@@ -49,7 +49,9 @@ import {
         NzRadioModule,
         NzSwitchModule,
         NzTableModule,
-        DataTableComponent
+        DataTableComponent,
+        NzIconModule,
+        NzModalModule
 
     ]
 

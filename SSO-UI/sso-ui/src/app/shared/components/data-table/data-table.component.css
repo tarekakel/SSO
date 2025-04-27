@@ -2,3 +2,29 @@ form nz-form-item {
     margin-right: 16px;
     margin-bottom: 8px;
 }
+
+.action-icons {
+    font-size: 18px;
+
+    cursor: pointer;
+
+
+}
+
+
+.action-icon-edit {
+    color: blue;
+}
+
+.action-icon-save {
+    color: green;
+}
+
+
+.action-icon-cancel {
+    color: red;
+}
+
+.action-icon-add {
+    color: black;
+}

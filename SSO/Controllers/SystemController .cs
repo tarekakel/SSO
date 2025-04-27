@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Domain.Interfaces.Services.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.General.Dtos;
@@ -11,6 +12,8 @@ namespace SSO.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [Authorize(Roles = "Admin")]
+
     public class SystemController : ControllerBase
     {
         private readonly ISystemService _systemService;
@@ -40,8 +43,8 @@ namespace SSO.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateSystemDto dto)
         {
-            await _systemService.AddAsync(dto);
-            return Ok();
+            ;
+            return Ok(await _systemService.AddAsync(dto));
         }
 
         [HttpPut]

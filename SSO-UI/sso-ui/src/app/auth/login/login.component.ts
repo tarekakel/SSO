@@ -56,8 +56,8 @@ export class LoginComponent {
           this.message.success('Login successful!');
 
           // Store token and redirect
-          localStorage.setItem('authToken', token);
-          this.router.navigate(['/dashboard']);
+          localStorage.setItem('auth_token', token);
+          this.router.navigate(['/main/system/system-list']);
         } else {
           console.warn('Login failed:', response.message);
           this.message.error(response.message); // ng-zorro message service or your own UI

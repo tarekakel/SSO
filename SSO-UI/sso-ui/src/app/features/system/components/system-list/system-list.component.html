@@ -1,1 +1,15 @@
-<app-data-table [data]="tableData" [columns]="tableColumns" [loading]="loading"></app-data-table>
+<div class="d-flex justify-content-end pb-2">
+    <button nz-button nzType="primary" nzShape="circle" (click)="showAdd=true">
+        <i nz-icon nzType="plus"></i>
+    </button>
+
+</div>
+
+<div class="row">
+    <div class="col">
+        <app-data-table (queryParamsChange)="getSystmList($event)" [tableData]="response" [columns]="tableColumns"
+            [loading]="loading" [tableTitle]="title"></app-data-table>
+    </div>
+</div>
+
+<app-system-add [isVisible]="showAdd" (modalClosed)="showAdd = false"></app-system-add>

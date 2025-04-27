@@ -11,14 +11,22 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes), provideClientHydration(), provideStore(),
-     provideEffects(), provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), 
-     provideNzI18n(en_US), importProvidersFrom(FormsModule), provideAnimationsAsync(),
-      provideHttpClient(withFetch())]
+    provideEffects(), provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideNzI18n(en_US), importProvidersFrom(FormsModule,HttpClientModule), provideAnimationsAsync(),
+    provideHttpClient(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ]
 };

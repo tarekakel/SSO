@@ -28,6 +28,7 @@ public class TokenService : ITokenService
         var authClaims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.UserName ?? user.Email ?? user.Id),
             new Claim(ClaimTypes.Email, user.Email!),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new("DisplayName", user.DisplayName ?? ""),

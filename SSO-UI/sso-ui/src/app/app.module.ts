@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
 import { RouterModule } from '@angular/router';
 
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -17,6 +18,5 @@ import { RouterModule } from '@angular/router';
     AuthModule,
     RouterModule,
   ],
-
 })
 export class AppModule { }

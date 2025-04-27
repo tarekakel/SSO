@@ -61,7 +61,7 @@ namespace Persistence.Repositories.Security
             var totalCount = await query.CountAsync();
 
             var data = await query
-                .Skip(pagedRequest.PageIndex * pagedRequest.PageSize)
+                .Skip((pagedRequest.PageIndex - 1) * pagedRequest.PageSize)
                 .Take(pagedRequest.PageSize)
                 .ToListAsync();
 

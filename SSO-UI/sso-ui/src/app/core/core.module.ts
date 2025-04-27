@@ -1,6 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './interceptors/AuthInterceptor'; // adjust path if needed
+import { AuthInterceptor } from './interceptors/auth.interceptor'; // adjust path if needed
 
 @NgModule({
     providers: [

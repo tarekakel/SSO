@@ -14,7 +14,7 @@ namespace Domain.Interfaces.Services.Security
         Task<GeneralResponse<PagedResult<SystemDto>>> Search(PagedRequest<SystemDto> pagedRequest);
 
         Task<SystemDto?> GetByIdAsync(Guid id);
-        Task AddAsync(CreateSystemDto dto);
+        Task<GeneralResponse<string>> AddAsync(CreateSystemDto dto);
         Task UpdateAsync(UpdateSystemDto dto);
         Task DeleteAsync(Guid id);
     }

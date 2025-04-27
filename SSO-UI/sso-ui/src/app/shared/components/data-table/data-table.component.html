@@ -1,4 +1,4 @@
-<div class="components-table-demo-control-bar">
+<!-- <div class="components-table-demo-control-bar">
   <form nz-form nzLayout="inline" [formGroup]="settingForm">
     @for (item of listOfSwitch; track item) {
     <nz-form-item>
@@ -21,14 +21,20 @@
     </nz-form-item>
     }
   </form>
-</div>
-<nz-table ngSkipHydration #dynamicTable [nzScroll]="{ x: scrollX, y: scrollY }" [nzData]="data"
+</div> -->
+<!-- <div class="d-flex pb-2 justify-content-end">
+  <i nz-icon nzType="plus" class="action-icons action-icon-add" title="add new" (click)="addNew()"></i>
+</div> -->
+
+
+<nz-table #editRowTable ngSkipHydration #dynamicTable [nzScroll]="{ x: scrollX, y: scrollY }" [nzData]="data"
   [nzTableLayout]="settingValue.tableLayout" [nzBordered]="settingValue.bordered" [nzSimple]="settingValue.simple"
-  [nzLoading]="loading" [nzPaginationType]="settingValue.paginationType"
-  [nzPaginationPosition]="settingValue.position" [nzShowSizeChanger]="settingValue.sizeChanger"
-  [nzFrontPagination]="settingValue.pagination" [nzShowPagination]="settingValue.pagination"
-  [nzFooter]="settingValue.footer ? 'Here is Footer' : null" [nzTitle]="settingValue.title ? 'Here is Title' : null"
-  [nzSize]="settingValue.size" (nzCurrentPageDataChange)="currentPageDataChange($event)">
+  [nzLoading]="loading" [nzPaginationType]="settingValue.paginationType" [nzPaginationPosition]="settingValue.position"
+  [nzShowSizeChanger]="settingValue.sizeChanger" [nzFrontPagination]="settingValue.pagination"
+  [nzShowPagination]="settingValue.pagination" [nzFooter]="settingValue.footer ? 'Here is Footer' : null"
+  [nzTitle]="settingValue.title ? tableTitle: null" [nzSize]="settingValue.size" [nzTotal]="tableData?.totalCount??0"
+  [nzPageSize]="10" [nzPageIndex]="1" (nzQueryParams)="onQueryParamsChange($event)"
+  (nzCurrentPageDataChange)="currentPageDataChange($event)" [nzFrontPagination]="false">
   <thead>
     @if (settingValue.header) {
     <tr>
@@ -47,7 +53,7 @@
       <th *ngFor="let col of columns">
         {{ col.title }}
       </th>
-
+      <th>Actions</th>
     </tr>
     }
   </thead>
@@ -60,20 +66,40 @@
       @if (settingValue.checkbox) {
       <td [nzLeft]="fixedColumn" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
       }
+      @if (!editCache[data.id]?.edit) {
       <td *ngFor="let col of columns">
-        <!-- <span > -->
         {{ data[col.key] }}
-        <!-- </span> -->
       </td>
-      <!--       
-      <td [nzLeft]="fixedColumn">{{ data.name }}</td>
-      <td>{{ data.age }}</td>
-      <td [nzEllipsis]="settingValue.ellipsis">{{ data.address }}</td> -->
       <td [nzRight]="fixedColumn" [nzEllipsis]="settingValue.ellipsis">
-        <a href="#">Delete</a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a href="#">More action</a>
+        <!-- <a href="#">Delete</a>
+        <nz-divider nzType="vertical"></nz-divider> -->
+        <i nz-icon nzType="edit" class="action-icons action-icon-edit" (click)="startEdit(data)"></i>
+        <!-- <a >Edit</a> -->
       </td>
+      }
+      @else {
+
+      <td *ngFor="let col of columns">
+        @if (col.key === 'id') {
+        {{ data[col.key] }}
+        }
+        @else {
+        <input type="text" nz-input [(ngModel)]="editCache[data.id].data[col.key]" />
+        }
+        <!-- <input type="text" nz-input [(ngModel)]="editCache[data.id].data[col.key]" /> -->
+      </td>
+      <td>
+        <i nz-icon nzType="check" class="action-icons action-icon-save" (click)="saveEdit(data)"></i>
+
+        <!-- <a (click)="saveEdit(data.id)">Save</a> -->
+
+        <nz-divider nzType="vertical"></nz-divider>
+        <i nz-icon nzType="close" class="action-icons action-icon-cancel" (click)="cancelEdit(data)"></i>
+
+        <!-- <a (click)="cancelEdit(data.id)">Cancel</a> -->
+      </td>
+      }
+
     </tr>
     @if (settingValue.expandable) {
     <tr [nzExpand]="data.expand">

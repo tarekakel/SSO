@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import {
   NzTableLayout,
   NzTablePaginationPosition,
   NzTablePaginationType,
+  NzTableQueryParams,
   NzTableSize
 } from 'ng-zorro-antd/table';
 
@@ -53,18 +54,20 @@ interface TableColumn {
 })
 
 export class DataTableComponent implements OnInit, OnChanges {
+  @Input() tableData: any = {};
 
-  @Input() data: any[] = [];
   @Input() loading: boolean = false;
   @Input() columns: TableColumn[] = [];
+  @Input() tableTitle: any;
+  @Output() queryParamsChange = new EventEmitter<NzTableQueryParams>();
 
-
+  data: any[] = [];
   settingForm: FormGroup<{ [K in keyof Setting]: FormControl<Setting[K]> }>;
   // listOfData: readonly ItemData[] = [];
   // displayData: readonly ItemData[] = [];
   allChecked = false;
   indeterminate = false;
-  fixedColumn = false;
+  fixedColumn = true;
   scrollX: string | null = null;
   scrollY: string | null = null;
   settingValue: Setting;
@@ -134,10 +137,13 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.refreshStatus();
   }
 
+  editCache: { [key: string]: { edit: boolean; data: any } } = {};
+
+
   refreshStatus(): void {
-    const validData = this.data.filter(value => !value.disabled);
-    const allChecked = validData.length > 0 && validData.every(value => value.checked);
-    const allUnChecked = validData.every(value => !value.checked);
+    const validData = this.data?.filter(value => !value.disabled);
+    const allChecked = validData?.length > 0 && validData.every(value => value.checked);
+    const allUnChecked = validData?.every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = !allChecked && !allUnChecked;
   }
@@ -151,6 +157,17 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.refreshStatus();
   }
 
+  startEdit(data: any): void {
+    if (!this.editCache[data?.id]) {
+      this.editCache[data?.id] = {
+        edit: false,
+        data: {}
+      };
+    }
+
+    this.editCache[data?.id].edit = true;
+    this.editCache[data?.id].data = JSON.parse(JSON.stringify(data)) // deep clone
+  }
   // generateData(): readonly any[] {
   //   const data: any[] = [];
   //   for (let i = 1; i <= 100; i++) {
@@ -191,6 +208,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.settingValue = this.settingForm.value as Setting;
   }
   ngOnChanges(changes: SimpleChanges): void {
+    this.data = this.tableData.data;
   }
 
   ngOnInit(): void {
@@ -204,7 +222,7 @@ export class DataTableComponent implements OnInit, OnChanges {
     this.settingForm.controls.fixHeader.valueChanges.subscribe(fixed => {
       this.scrollY = fixed ? '240px' : null;
     });
-
+    this.data = this.tableData.data;
     console.log('from comp', this.data);
 
 
@@ -216,5 +234,32 @@ export class DataTableComponent implements OnInit, OnChanges {
     //     }
     //   });
     //  this.data = this.generateData();
+  }
+
+
+  cancelEdit(data: any): void {
+    const index = this.data.findIndex(item => item.id === data.id);
+
+
+    this.editCache[data.id] = {
+      data: { ...this.data[index] },
+      edit: false
+    };
+  }
+
+  saveEdit(data: any): void {
+    const index = this.data.findIndex(item => item.id === data.id);
+    Object.assign(this.data[index], this.editCache[data.id].data);
+    this.editCache[data.id].edit = false;
+  }
+
+
+  onQueryParamsChange(params: NzTableQueryParams): void {
+    console.log(params);
+    const { pageSize, pageIndex, sort, filter } = params;
+    const currentSort = sort.find(item => item.value !== null);
+    const sortField = (currentSort && currentSort.key) || null;
+    const sortOrder = (currentSort && currentSort.value) || null;
+   this.queryParamsChange.emit(params);
   }
 }

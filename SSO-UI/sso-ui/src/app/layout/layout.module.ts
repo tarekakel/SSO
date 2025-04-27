@@ -8,8 +8,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MainLayoutComponent } from './components/main-layout/main-layout.component';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-import { IconDefinition } from '@ant-design/icons-angular';
-import { AppComponent } from "../app.component";
+ 
 import { RouterModule } from '@angular/router';
 @NgModule({
     declarations: [
@@ -24,7 +23,7 @@ import { RouterModule } from '@angular/router';
         NzMenuModule,
         NzIconModule,
         NzBreadCrumbModule,
-        AppComponent,
+
         RouterModule
     ],
     exports: [

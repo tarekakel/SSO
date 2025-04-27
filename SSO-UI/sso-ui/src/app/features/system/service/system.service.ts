@@ -25,8 +25,8 @@ export class SystemService {
     return this.apiService.get<System>(`${this.apiUrl}/${id}`);
   }
 
-  create(system: Partial<System>): Observable<System> {
-    return this.apiService.post<System>(this.apiUrl, system);
+  create(system: GeneralResponse<string>): Observable<GeneralResponse<string>> {
+    return this.apiService.post<GeneralResponse<string>>(this.apiUrl, system);
   }
 
   update(id: number, system: Partial<System>): Observable<System> {

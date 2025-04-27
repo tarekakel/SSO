@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Repositories.Security;
+﻿using Application.Validators;
+using Domain.Interfaces.Repositories.Security;
 using Domain.Interfaces.Services.Security;
 using Domain.Security;
 using Shared.General.Dtos;
@@ -8,12 +9,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Application.Services.Security
 {
     public class SystemService : ISystemService
     {
         private readonly ISystemRepository _repo;
+        private readonly CreateSystemDtoValidator _validator = new();
 
         public SystemService(ISystemRepository repo)
         {
@@ -32,15 +35,32 @@ namespace Application.Services.Security
             return entity == null ? null : new SystemDto(entity.Id, entity.Name, entity.Description);
         }
 
-        public async Task AddAsync(CreateSystemDto dto)
+        public async Task<GeneralResponse<string>> AddAsync(CreateSystemDto dto)
         {
+
+            GeneralResponse<string> generalResponse = new GeneralResponse<string>();
+            var validationResult = _validator.Validate(dto);
+
+            if (!validationResult.IsValid)
+            {
+                var errors = validationResult.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return GeneralResponse<string>.ErrorResponse("Validation failed", errors);
+            }
+
+
             var entity = new SystemEntity
             {
                 Name = dto.Name,
                 Description = dto.Description
             };
-
             await _repo.AddAsync(entity);
+
+
+            return GeneralResponse<string>.SuccessResponse("Success");
+
         }
 
         public async Task UpdateAsync(UpdateSystemDto dto)

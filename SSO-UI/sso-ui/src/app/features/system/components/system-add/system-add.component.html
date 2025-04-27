@@ -1,0 +1,28 @@
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Add New System" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()"
+    [nzOkLoading]="isOkLoading">
+    <ng-container *nzModalContent>
+
+        <form nz-form [formGroup]="systemForm">
+
+            <nz-form-item>
+                <nz-form-control nzHasFeedback nzErrorTip="name is required">
+                    <nz-form-label [nzSpan]="6" nzFor="name" nzRequired>Name</nz-form-label>
+                    <input type="text" nz-input formControlName="name" placeholder="name" />
+
+                </nz-form-control>
+
+
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control nzHasFeedback nzErrorTip="description is required">
+                    <nz-form-label [nzSpan]="6" nzFor="description" nzRequired>Description</nz-form-label>
+                    <input type="text" nz-input formControlName="description" placeholder="description" />
+
+                </nz-form-control>
+
+
+            </nz-form-item>
+        </form>
+
+    </ng-container>
+</nz-modal>
